@@ -7,6 +7,7 @@ const PORT = 4000;
 
 const users = require('./routes/api/users.js');
 const admins = require('./routes/api/admins.js');
+const submission = require('./routes/api/submission.js')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
@@ -25,6 +26,7 @@ require("./config/passport")(passport);
 // Routes
 app.use("/api/users", users);
 app.use("/api/admins", admins);
+app.use("/api/submission", submission);
 
 //main
 app.listen(PORT, function () {
