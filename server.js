@@ -8,6 +8,7 @@ const PORT = 4000;
 const users = require('./routes/api/users.js');
 const admins = require('./routes/api/admins.js');
 const submission = require('./routes/api/submission.js')
+const createCompetitions = require('./routes/api/createCompetitions.js')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
@@ -27,6 +28,7 @@ require("./config/passport")(passport);
 app.use("/api/users", users);
 app.use("/api/admins", admins);
 app.use("/api/submission", submission);
+app.use("/api/ce2", createCompetitions);
 
 //main
 app.listen(PORT, function () {
@@ -59,4 +61,8 @@ app.get('/adminLogin', function(req,res){
 
 app.get('/adminHome', function(req,res){
     res.send("ADMIN LOGGED IN")
+})
+
+app.get('/cee', function(req,res){
+    res.render("ce")
 })
