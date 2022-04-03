@@ -18,7 +18,7 @@ const CompetitionsSchema = new Schema({
     competitionEndDate: {
         type: Date
     },
-    competitionSubmissions:[]
+    competitionSubmissions:[{type: Schema.Types.ObjectId, ref:"Submission"}]
 })
 
 module.exports = Competitions = mongoose.model("Competitions", CompetitionsSchema);

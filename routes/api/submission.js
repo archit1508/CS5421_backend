@@ -7,8 +7,8 @@ var submissionController = require('../../controllers/submission-controller.js')
 
 
 // Input parameter: competition Id 
-// Input query: q
-router.get("/submit/:competitionid", submissionController.receiveQuery);
+// Input query: q, competition(name)
+router.post("/submit/:id", submissionController.receiveQuery);
 
 
 

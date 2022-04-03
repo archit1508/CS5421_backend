@@ -8,10 +8,14 @@ const SubmissionSchema = new Schema({
     content:{
         type:String
     },
-    userId:{ // TODO user email??
+    creatorId:{ // TODO user email??
         type: String
     },
-    competitionId:{ // TODO user email??
+    createTime:{
+        type:Date
+    },
+    // competitionId:{ // TODO competition name??
+    competitionName:{ 
         type: String
     },
     correctness:{
