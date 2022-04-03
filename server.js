@@ -10,6 +10,7 @@ const admins = require("./routes/api/admins.js");
 const submission = require("./routes/api/submission.js");
 const createCompetitions = require("./routes/api/createCompetitions.js");
 const runQueries = require("./routes/api/runQueries.js");
+const registerCompetition = require("./routes/api/registerCompetitions");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -31,6 +32,7 @@ app.use("/api/admins", admins);
 app.use("/api/submission", submission);
 app.use("/api/ce2", createCompetitions);
 app.use("/api/ce2/", runQueries);
+app.use("/api/ce2/", registerCompetition);
 
 //main
 app.listen(PORT, function () {
