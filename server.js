@@ -11,8 +11,14 @@ const submission = require("./routes/api/submission.js");
 const createCompetitions = require("./routes/api/createCompetitions.js");
 const runQueries = require("./routes/api/runQueries.js");
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+app.use(function(req,res,next){
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 
 //mongo connection
 mongoose.connect("mongodb://127.0.0.1:27017/5421", { useNewUrlParser: true });
