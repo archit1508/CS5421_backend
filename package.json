@@ -24,9 +24,6 @@
     "pgtools": "^0.3.2",
     "validator": "^13.7.0"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/archit1508/CS5421_backend.git"

@@ -1,7 +1,15 @@
 const sql = require('../services/sql-query-service')
-const config = require('../config/config').defultConfig
+// const config = require('../config/config').defultConfig
 const Submission = require("../models/Submissions");
 const Competition = require("../models/Competitions");
+const DBServerConfig = {
+    database: 'Tutorial',
+    user: 'postgres',
+    host: 'localhost',
+    password: '19930102',
+    port: 5432,
+    // statement_timeout: 10000
+}
 ObjectID = require('mongodb').ObjectId;
 
 
@@ -27,67 +35,60 @@ var getCompetitionDetails = async function (competitionName){
             competitionEndDate: "competitionEndDate",
             competitionSubmissions : [],
             participantsIds:[],
-            DBServerConfig:{
-                database: 'Tutorial', // same as competition name
-                tables: ['table1', 'table2'],
-                correctAnswer: `{"result": [
-                    {
-                        "w_id": 301,
-                        "i_id": 1,
-                        "s_qty": 338
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 4,
-                        "s_qty": 938
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 5,
-                        "s_qty": 760
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 8,
-                        "s_qty": 924
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 12,
-                        "s_qty": 454
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 13,
-                        "s_qty": 768
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 21,
-                        "s_qty": 355
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 22,
-                        "s_qty": 23
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 31,
-                        "s_qty": 700
-                    },
-                    {
-                        "w_id": 301,
-                        "i_id": 36,
-                        "s_qty": 158
-                    }
-                ]}`,
-                user: 'postgres',
-                host: 'localhost',
-                password: '1234567',
-                port: 5432,
-                statement_timeout: 10000 //milliseconds
-            }
+            correctAnswer: `{"result": [
+                {
+                    "w_id": 301,
+                    "i_id": 1,
+                    "s_qty": 338
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 4,
+                    "s_qty": 938
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 5,
+                    "s_qty": 760
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 8,
+                    "s_qty": 924
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 12,
+                    "s_qty": 454
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 13,
+                    "s_qty": 768
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 21,
+                    "s_qty": 355
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 22,
+                    "s_qty": 23
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 31,
+                    "s_qty": 700
+                },
+                {
+                    "w_id": 301,
+                    "i_id": 36,
+                    "s_qty": 158
+                }
+            ]}`,
+            statementTimeout: 10000, //milliseconds
+            creationQuery: ``
 
         }
 
@@ -149,12 +150,12 @@ var isQueryResultEqual = async function (a, b){
 } 
 
 
-var checkQueryCorrectness = async function (query, DBServerConfig){
-
-    const correctAnswer = DBServerConfig.correctAnswer
+var checkQueryCorrectness = async function (query, DBServerConfig, correctAnswer){
+    
+    var resultObject = JSON.parse(correctAnswer);
+    // const correctAnswer = DBServerConfig.correctAnswer
     return new Promise((resolve, reject) => {
 
-        var resultObject = JSON.parse(correctAnswer);
         executeQuery(query, DBServerConfig)
         .then(result => {
             console.log('executeQuery result', result)
@@ -202,27 +203,59 @@ var checkExecutionTime = async function (query, DBServerConfig){
 }
 
 // TODO: set up new database for every query 
-var setupSQL = async function (competitionDetails){
+var setupSQL = async function (creationQuery){
+
+    // TODO: query to create new database 
+    const newDBQuery = ``
+
+    const query = newDBQuery + creationQuery
+
+    executeQuery(query, DBServerConfig)
+    .then(result => {
+        console.log('executeQuery result', result)
+        resolve ({"result": result})
+    })
+    .catch(err => {
+        console.log('err', err)
+        resolve (err)
+    })
+
 
 }
 
 // TODO: delete database from DB server after the query
-var resetSQL = async function (DBServerConfig){
+var cleanSQL = async function (DBServerConfig){
+
+
 
 }
 
+var getCorrectAnswer = async function (query){
+    return new Promise((resolve, reject) => {
+        executeQuery(query, DBServerConfig)
+        .then(result => {
+            console.log('executeQuery result', result)
+            resolve (JSON.stringify({"result": result}))
+        })
+        .catch(err => {
+            console.log('err', err)
+            resolve (err)
+        })
+    })
+}
 
+// Make sure the database in DBServerConfig is correct
 var executeQuery = async function (query, DBServerConfig){
-  
+    
     // use defult setting in config file if no config find for competition
-    var SQLConfig = DBServerConfig ? DBServerConfig : config
+    // var SQLConfig = DBServerConfig ? DBServerConfig : config
 
     // Send Query to SQL DB
     return new Promise((resolve, reject) => {
 
         if (isValid(query)){
 
-            sql.query(SQLConfig, query)
+            sql.query(DBServerConfig, query)
             .then(result => {
                 console.log(result)
                 resolve (result.rows)
@@ -236,7 +269,6 @@ var executeQuery = async function (query, DBServerConfig){
 }
 
 var updateMongoDBQueryInfo = async function (submissionId, details){
-
 
 
 }
@@ -303,34 +335,45 @@ var updateUser = async function (submissionId, creatorId){
 
 
 var receiveQuery = async function(req,res){
-    // setup();
+    
 
     const creatorId = req.params.id
     const competitionName = req.query.competition
     const query = req.query.q;
     console.log(competitionName, query, creatorId)
 
-    competitionDetails = await getCompetitionDetails(competitionName)
-    // console.log(competitionDetails)
-    
-    const submissionId = createSubmissionInMongoDB(query, competitionName, creatorId)
-    // const submissionId = new ObjectID('62448f3091a32b98f19bff03') // test
-    updateCompetition(submissionId, competitionName)
-    updateUser(submissionId, creatorId)
 
-    // One database setup
-    const DBServerConfig = competitionDetails.DBServerConfig
+    const competitionDetails = await getCompetitionDetails(competitionName)
+    // console.log(competitionDetails)
+
+    // const correctAnswer = competitionDetails.correctAnswer 
+    const correctAnswer = await getCorrectAnswer(query) // testing
+    console.log(correctAnswer)
+
+    // const submissionId = createSubmissionInMongoDB(query, competitionName, creatorId)
+    const submissionId = new ObjectID('62448f3091a32b98f19bff03') // test
+    // updateCompetition(submissionId, competitionName)
+    // updateUser(submissionId, creatorId)
+
 
     // TODO
     // create new database for each new query
-    // const DBServerConfig = setupSQL(competitionDetails);
+    // const databaseName = competitionName + '-' + submissionId
+    const databaseName = 'Tutorial' // testing
+    DBServerConfig['database'] = databaseName
+    DBServerConfig['statement_timeout'] = competitionDetails.statementTimeout 
+    
+    console.log(DBServerConfig)
+    // await setupSQL(competitionDetails.creationQuery);
 
-    checkQueryCorrectness(query, DBServerConfig)
+
+
+    checkQueryCorrectness(query, DBServerConfig, correctAnswer)
     .then(isQueryCorrect => {
         console.log('isQueryCorrect', isQueryCorrect)
 
-        // TODO
-        // updateMongoDBQueryInfo(submissionId, {"correctness": isQueryCorrect})
+    //     // TODO
+    //     // updateMongoDBQueryInfo(submissionId, {"correctness": isQueryCorrect})
 
         switch (isQueryCorrect) {
             case 'correct': // check for execution time if query return correct answer
@@ -340,20 +383,23 @@ var receiveQuery = async function(req,res){
                     // console.log(executionTime)
                     // TODO
                     // updateMongoDBQueryInfo(queryId, {"executionTime": executionTime})
-                    // resetSQL(databaseDetails)
+                    // cleanSQL(databaseName)
                     res.status(200).json(executionTime)
                 });
                 break;
             case 'wrong answer': // stop and return 
                 console.log('wrong', isQueryCorrect);
+                // cleanSQL(databaseName)
                 res.status(200).json('Wrong')
                 break;
             case 'timeout': // stop and return
                 console.log('timeout');
+                // cleanSQL(databaseName)
                 res.status(200).json('Query timeout!')
                 break;
             default:
                 console.log(isQueryCorrect);
+                // cleanSQL(databaseName)
                 res.status(200).json('SQL error')
                 break;
         }
@@ -361,6 +407,7 @@ var receiveQuery = async function(req,res){
     })
     .catch(err => {
         console.log(err)
+        // cleanSQL(databaseName)
         res.status(400).json('Invalid Query Submitted!')
     })
 
@@ -368,3 +415,4 @@ var receiveQuery = async function(req,res){
 
 
 module.exports.receiveQuery = receiveQuery;
+module.exports.getCorrectAnswer = getCorrectAnswer;
