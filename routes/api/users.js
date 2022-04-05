@@ -52,7 +52,7 @@ router.post("/userLogin", (req, res) => {
                     name: user.name
                 };
                 // Sign token
-                jwt.sign(
+                return jwt.sign(
                     payload,
                     secretOrkey,
                     {
@@ -61,11 +61,13 @@ router.post("/userLogin", (req, res) => {
                     (err, token) => {
                         res.json({
                             success: true,
-                            token: "Bearer " + token
+                            token: "Bearer " + token,
+                            payload: payload,
+                            expiresIn: 3155692,
+                            userType:'user'
                         });
                     }
                 );
-                res.redirect("/userHome")
             } else {
                 return res
                     .status(400)

@@ -13,7 +13,8 @@ const UserSchema = new Schema({
     },
     studentId:{
         type: String
-    }, 
-    competitions: []
+    },
+    competitionId:[],
+    Submissions:[{type: Schema.Types.ObjectId, ref:"Submission"}]
 });
 module.exports = User = mongoose.model("users", UserSchema);

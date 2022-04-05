@@ -1,8 +1,8 @@
 const defultConfig = {
     user: 'postgres',
     host: 'localhost',
-    database: 'Lecture',
-    password: '1234567',
+    database: 'Tutorial',
+    password: '19930102',
     port: 5432,
 }
 
