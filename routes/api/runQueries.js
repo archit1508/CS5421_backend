@@ -39,12 +39,12 @@ router.post("/runQueries", function (req, res) {
         };
         sql
           .query(DBServerConfig, req.body.query)
-          .then((response) => {
-            const queries = competition.creationQueries;
-            queries.push(req.body.query);
-            competition
-              .updateOne({}, { creationQueries: queries })
-              .then((response) => {
+          .then(() => {
+            let queries = competition.creationQueries;
+            queries = queries + req.body.query;
+            Competition
+              .findOneAndUpdate({ competitionName: req.body.competitionName }, { creationQueries: queries })
+              .then(() => {
                 return res.status(200).send("Query executed successfully");
               })
               .catch((err) => {
@@ -52,7 +52,7 @@ router.post("/runQueries", function (req, res) {
               });
           })
           .catch((err) => {
-            return res.status(404).send(err.message);
+            return res.status(404).send("Incorrect query");
           });
       }
     }
