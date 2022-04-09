@@ -8,7 +8,7 @@ var createExecutionThread = async function(req,res){
 
     const creatorId = req.params.id
     const competitionName = req.query.competition
-    const query = req.query.q;
+    const query = req.body.q;
 
     const info = {
         "creatorId": creatorId,
