@@ -18,31 +18,47 @@ router.post("/register", function (req, res) {
             return res.status(404).send("User not found");
           } else {
             const participants = competition.participantsIds;
-            participants.push(req.body.emailID);
-            competition
-              .updateOne({}, { participantsIds: participants })
-              .then((resp) => {
-                const competitions = user.competitions;
-                competitions.push(req.body.competitionName);
-                user
-                  .updateOne({}, { competitions: competitions })
-                  .then((response) => {
-                    return res
-                      .status(200)
-                      .send("User registered for competition");
-                  })
-                  .catch((err) => {
-                    return res.status(500).send(err.message);
-                  });
-              })
-              .catch((err) => {
-                return res.status(500).send(err.message);
-              });
+            if (isAlreadyregistered(participants, req.body.emailID)) {
+              return res.status(404).send("User already registered");
+            } else {
+              participants.push(req.body.emailID);
+              Competition.findOneAndUpdate(
+                { competitionName: req.body.competitionName },
+                { participantsIds: participants }
+              )
+                .then(() => {
+                  const competitions = user.competitionId;
+                  competitions.push(req.body.competitionName);
+                  User.findOneAndUpdate(
+                    { email: req.body.emailID },
+                    { competitionId: competitions }
+                  )
+                    .then(() => {
+                      return res
+                        .status(200)
+                        .send("User registered for competition");
+                    })
+                    .catch((err) => {
+                      return res.status(500).send(err.message);
+                    });
+                })
+                .catch((err) => {
+                  return res.status(500).send(err.message);
+                });
+            }
           }
         });
       }
     }
   );
 });
+const isAlreadyregistered = (participants, userID) => {
+  for(const id of participants){
+    if(userID === id){
+      return true;
+    }
+  }
+  return false;
+}
 
 module.exports = router;
