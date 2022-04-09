@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Competition = require("../../models/Competitions");
+const submissionController = require('../../controllers/submission-controller.js');
 
 router.get('/getCompetitionsAll', function(req,res){
     Competition.find({}).then(foundEvents =>{
@@ -23,5 +24,9 @@ router.get('/getCompetitionsAll', function(req,res){
         }
     })
 })
+
+
+router.get("/competition/:name", submissionController.getSubmissionsByCompetition);
+router.get("/user/:id", submissionController.getSubmissionsByUser);
 
 module.exports = router;

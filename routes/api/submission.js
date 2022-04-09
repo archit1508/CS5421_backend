@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { fork } = require('child_process');
 
-const submissionController = require('../../controllers/submission-controller.js');
 const processMap = new Map();
 
 var createExecutionThread = async function(req,res){
@@ -39,7 +38,6 @@ var createExecutionThread = async function(req,res){
 // Input query: q, competition(name)
 router.post("/submit/:id", createExecutionThread);
 // router.post("/submit/:id", submissionController.runQuery);
-
 
 
 

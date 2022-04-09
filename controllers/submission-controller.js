@@ -491,81 +491,81 @@ var runQuery = async function(info){
     const correctAnswer = competitionDetails.correctAnswer 
     console.log('correctAnswer', correctAnswer)
 
-    // const submissionId = await createSubmission(query, competitionName, creatorId)
-    // // const submissionId = new ObjectID('62448f3091a32b98f19bff03') // test
-    // console.log("submissionId", submissionId)
+    const submissionId = await createSubmission(query, competitionName, creatorId)
+    // const submissionId = new ObjectID('62448f3091a32b98f19bff03') // test
+    console.log("submissionId", submissionId)
 
-    // const competitionRes = await updateCompetition(submissionId, competitionName)
-    // const userRes = await updateUser(submissionId, creatorId)
+    const competitionRes = await updateCompetition(submissionId, competitionName)
+    const userRes = await updateUser(submissionId, creatorId)
 
-    // // create new database for each new query
-    // const databaseName = competitionName.toLowerCase() + '_' + submissionId
+    // create new database for each new query
+    const databaseName = competitionName.toLowerCase() + '_' + submissionId
 
-    // DBServerConfig['database'] = competitionName
-    // DBServerConfig['statement_timeout'] = competitionDetails.statementTimeout 
+    DBServerConfig['database'] = competitionName
+    DBServerConfig['statement_timeout'] = competitionDetails.statementTimeout 
     
-    // return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
 
-    //     setupSQL(DBServerConfig, competitionDetails.creationQueries, databaseName)
-    //     .then(setupResult => {
-    //         console.log('setupResult', setupResult)
-    //         console.log('query', query)
+        setupSQL(DBServerConfig, competitionDetails.creationQueries, databaseName)
+        .then(setupResult => {
+            console.log('setupResult', setupResult)
+            console.log('query', query)
 
-    //         checkQueryCorrectness(query, DBServerConfig, correctAnswer)
-    //         .then(getQueryResult => {
-    //             console.log('isQueryCorrect', getQueryResult)
+            checkQueryCorrectness(query, DBServerConfig, correctAnswer)
+            .then(getQueryResult => {
+                console.log('isQueryCorrect', getQueryResult)
 
-    //             updateSubmission(submissionId, {"queryResult": getQueryResult})
-    //             .then(result => {
+                updateSubmission(submissionId, {"queryResult": getQueryResult})
+                .then(result => {
 
-    //                 switch (getQueryResult) {
-    //                     case 'correct': // check for execution time if query return correct answer
-    //                         // console.log('correct')
-    //                         checkRunningTimes(query, DBServerConfig)
-    //                         .then(runningTimes => {
-    //                             submission = updateSubmission(submissionId, runningTimes)
-    //                             clean = cleanSQL(DBServerConfig, competitionName, databaseName)
-    //                             Promise.all([submission, clean])
-    //                             .then(result => {
-    //                                 resolve(runningTimes)
-    //                             })
-    //                         });
-    //                         break;
-    //                     case 'wrong answer': // stop and return 
-    //                         cleanSQL(DBServerConfig, competitionName, databaseName)
-    //                         resolve('Wrong')
-    //                         break;
-    //                     case 'timeout': // stop and return
-    //                         cleanSQL(DBServerConfig, competitionName, databaseName)
-    //                         resolve('Query timeout!')
-    //                         break;
-    //                     default:
-    //                         cleanSQL(DBServerConfig, competitionName, databaseName)
-    //                         resolve('SQL Query error')
-    //                         break;
-    //                 }
+                    switch (getQueryResult) {
+                        case 'correct': // check for execution time if query return correct answer
+                            // console.log('correct')
+                            checkRunningTimes(query, DBServerConfig)
+                            .then(runningTimes => {
+                                submission = updateSubmission(submissionId, runningTimes)
+                                clean = cleanSQL(DBServerConfig, competitionName, databaseName)
+                                Promise.all([submission, clean])
+                                .then(result => {
+                                    resolve(runningTimes)
+                                })
+                            });
+                            break;
+                        case 'wrong answer': // stop and return 
+                            cleanSQL(DBServerConfig, competitionName, databaseName)
+                            resolve('Wrong')
+                            break;
+                        case 'timeout': // stop and return
+                            cleanSQL(DBServerConfig, competitionName, databaseName)
+                            resolve('Query timeout!')
+                            break;
+                        default:
+                            cleanSQL(DBServerConfig, competitionName, databaseName)
+                            resolve('SQL Query error')
+                            break;
+                    }
 
-    //             })
-    //             .catch(err => {
-    //                 cleanSQL(DBServerConfig, competitionName, databaseName)
-    //                 reject(err)
-    //             })
+                })
+                .catch(err => {
+                    cleanSQL(DBServerConfig, competitionName, databaseName)
+                    reject(err)
+                })
 
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
-    //             cleanSQL(DBServerConfig, competitionName, databaseName)
-    //             reject('Invalid Query Submitted!')
+            })
+            .catch(err => {
+                console.log(err)
+                cleanSQL(DBServerConfig, competitionName, databaseName)
+                reject('Invalid Query Submitted!')
 
-    //         })
+            })
 
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //         reject(err)
+        })
+        .catch(err => {
+            console.log(err)
+            reject(err)
 
-    //     })
-    // })
+        })
+    })
 
 }
 
@@ -589,16 +589,67 @@ process.on('message', async (msg) => {
 });
 
 
+const getSubmissionById = async function (id){
+    console.log(id)
+    return new Promise((resolve, reject) => {
+        Submission.findOne({ id: id })
+        .then(submission => {
+            if (!submission) reject (id)
+            console.log('submission',submission)
+            resolve(submission)
+        })
 
-const getSubmissionsByCompetition = async function (req, res){
-
+    })
 }
 
 
+const getSubmissionsByCompetition = async function (req, res){
+    const competitionName = req.params.name
+    console.log('competitionName', competitionName)
+
+    Competition.findOne({ competitionName: competitionName })
+    .then(competition => {
+        let promises = []
+        const submissionIds = competition.competitionSubmissions
+        for (const id of submissionIds) {
+            promises.push(getSubmissionById(id))
+        }    
+        Promise.all(promises)
+        .then((results) => {
+            return res.status(200).send(results);
+        })
+        .catch((e) => {
+            return res.status(400).send(e);
+        });
+    })
+}
+
+
+
+
 const getSubmissionsByUser = async function (req, res){
-    
+    const userId = req.params.id
+
+    User.findOne({ email: userId })
+    .then(user => {
+        let promises = []
+        const submissionIds = user.Submissions
+        for (const id of submissionIds) {
+            promises.push(getSubmissionById(id))
+        }    
+        Promise.all(promises)
+        .then((results) => {
+            return res.status(200).send(results);
+        })
+        .catch((e) => {
+            return res.status(400).send(e);
+        });
+    })
+
 }
 
 // module.exports.receiveQuery = receiveQuery;
 module.exports.runQuery = runQuery;
 module.exports.getCorrectAnswer = getCorrectAnswer;
+module.exports.getSubmissionsByCompetition = getSubmissionsByCompetition;
+module.exports.getSubmissionsByUser = getSubmissionsByUser;
