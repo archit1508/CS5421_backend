@@ -6,8 +6,8 @@ const processMap = new Map();
 
 var createExecutionThread = async function(req,res){
 
-    const creatorId = req.params.id
-    const competitionName = req.query.competition
+    const creatorId = req.body.id
+    const competitionName = req.body.competition
     const query = req.body.q;
 
     const info = {
