@@ -28,6 +28,7 @@ var parseError = async function(err, sqlString) {
 
     if (err.code !== undefined) {
       console.log("Postgres error code:", err.code);
+      console.log("Postgres error", err);
       if (errorCodes[err.code] !== undefined) return (errorCodes[err.code]);
       if (err.message !== undefined) return (err.message);   
     }
@@ -63,7 +64,7 @@ var parseError = async function(err, sqlString) {
 
 const query = (config, sqlString) => {
 
-  console.log(config, sqlString)
+  // console.log(config, sqlString)
 
   return new Promise((resolve, reject) => {
       
@@ -72,8 +73,10 @@ const query = (config, sqlString) => {
       sql_client.query(sqlString, (error, results) => {
           if (error) {
             var error_msg = parseError(error, sqlString)
+            sql_client.end()
             reject (error_msg) 
           }
+          sql_client.end()
           resolve (results)
       })
   })

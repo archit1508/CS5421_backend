@@ -1,3 +1,4 @@
+
 const sql = require('../services/sql-query-service')
 // const config = require('../config/config').defultConfig
 const Submission = require("../models/Submissions");
@@ -12,12 +13,6 @@ const DBServerConfig = {
 }
 ObjectID = require('mongodb').ObjectId;
 
-
-// TODO: Validate SQL query from Student
-const isValid = query => {
-    console.log(query)
-    return query.length
-}
 
 
 var getCompetitionDetails = async function (competitionName){
@@ -88,7 +83,89 @@ var getCompetitionDetails = async function (competitionName){
                 }
             ]}`,
             statementTimeout: 10000, //milliseconds
-            creationQuery: ``
+            creationQueries: `
+            CREATE TABLE warehouse (
+                w_id INTEGER PRIMARY KEY,
+                w_name VARCHAR(50),
+                w_street VARCHAR(50),
+                w_city VARCHAR(50),
+                w_country VARCHAR(50)
+            );
+            INSERT INTO warehouse (w_id, w_name, w_street, w_city, w_country) VALUES (301, 'Schmedeman', 'Sunbrook', 'Singapore', 'Singapore');
+
+            CREATE TABLE item (
+                i_id INTEGER PRIMARY KEY,
+                i_im_id CHAR(8) UNIQUE NOT NULL,
+                i_name VARCHAR(50)  NOT NULL,
+                i_price NUMERIC(5, 2)  NOT NULL CHECK(i_price >0));
+                INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (1, '35356226', 'Indapamide', 95.23);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (2, '00851287', 'SYLATRON', 80.22);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (3, '52549414', 'Meprobamate', 11.64);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (4, '54868007', 'MECLIZINE HYDROCHLORIDE', 54.49);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (5, '24658312', 'Doxycycline Hyclate', 28.99);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (6, '11822073', 'miconazole 1', 73.35);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (7, '51393666', 'Nevi (Mole) Control', 96.86);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (8, '60512629', 'KALI BICHROMICUM', 15.6);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (9, '68788973', 'TOPIRAMATE', 48.58);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (10, '60429082', 'Glipizide', 12.62);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (11, '50241141', 'Skyline Antibacterial Hand Cleanser', 75.03);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (12, '00540097', 'Oxcarbazepine', 18.86);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (13, '67345078', '4 in 1 Pressed Mineral SPF 15 Porcelain', 62.04);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (14, '36987288', 'Virginia Live Oak', 36.96);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (15, '67510150', 'Night Time Cold/Flu Relief Cherry', 92.26);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (16, '53942326', 'Tartar Control Plus', 50.96);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (17, '33992113', 'anti-dandruff', 18.73);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (18, '53645147', 'Ferrum Metallicum', 67.92);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (19, '44924010', 'BABOR Baborganic Crystal Face Scrub', 21.95);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (20, '16590303', 'Liothyronine Sodium', 52.9);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (21, '30142112', 'Kroger DayTime Flu plus Severe Cold and Cough', 88.69);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (22, '59078034', 'Tomatox Magic Massage Pack', 38.52);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (23, '63354871', 'BANANA BOAT', 98.86);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (24, '52731704', 'Anxiety Complex', 14.11);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (25, '49288012', 'Cattle Hair', 51.02);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (26, '68012054', 'Zegerid', 17.08);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (27, '53942502', 'NIGHT-TIME', 91.42);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (28, '49230191', 'DELFLEX', 38.96);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (29, '00934405', 'Clozapine', 70.14);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (30, '05361945', 'RULOX REGULAR', 17.76);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (31, '52125461', 'GENTAMICIN SULFATE', 93.43);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (32, '68012490', 'Fenoglide', 41.31);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (33, '57894071', 'Simponi', 1.3);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (34, '49527997', 'ACNE SOLUTIONS', 51.91);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (35, '50021301', 'SUNZONE SPORT SUNSCREEN SPF 30', 85.21);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (36, '29565200', 'Sunscreen', 55.7);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (37, '64942122', 'Dove Men plus Care', 41.28);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (38, '62750003', 'Zicam', 29.94);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (39, '05170410', 'Vasopressin', 85.02);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (40, '52959692', 'misoprostol', 6.92);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (41, '36987225', 'Jute', 31.03);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (42, '42195210', 'Pyrilamine Maleate and Phenylephrine Hydrochloride', 57.93);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (43, '52959613', 'Amoxicillin', 27.5);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (44, '76420780', 'Multi-Specialty Kit', 23.04);
+            INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (45, '60505287', 'Ropinirole', 7.24);
+
+            CREATE TABLE stock (
+                w_id INTEGER REFERENCES warehouse(w_id),
+                i_id INTEGER REFERENCES item(i_id),
+                s_qty SMALLINT CHECK(s_qty > 0),
+                PRIMARY KEY (w_id, i_id));
+                
+                INSERT INTO stock VALUES (301, 1, 338);
+                INSERT INTO stock VALUES (301, 4, 938);
+                INSERT INTO stock VALUES (301, 5, 760);
+                INSERT INTO stock VALUES (301, 8, 924);
+                INSERT INTO stock VALUES (301, 12, 454);
+                INSERT INTO stock VALUES (301, 13, 768);
+                INSERT INTO stock VALUES (301, 21, 355);
+                INSERT INTO stock VALUES (301, 22, 23);
+                INSERT INTO stock VALUES (301, 31, 700);
+                INSERT INTO stock VALUES (301, 36, 158);
+                INSERT INTO stock VALUES (301, 42, 297);
+                INSERT INTO stock VALUES (301, 44, 837);
+                INSERT INTO stock VALUES (301, 45, 367);
+
+ 
+                `
 
         }
 
@@ -172,26 +249,34 @@ var checkQueryCorrectness = async function (query, DBServerConfig, correctAnswer
 }
 
 
-const readExecutionTimeFromResult = function (result) {
+const getExecutionAndPlanningTime = function (result) {
 
     //{ 'QUERY PLAN': 'Execution Time: 0.066 ms' }
     const executionTimeCell = result[result.length - 1]['QUERY PLAN']
     const executionTimeString = executionTimeCell.split(': ')[1]
     const executionTime = executionTimeString.split(' ')[0]
-    return parseFloat(executionTime)
+
+    const planningTimeCell = result[result.length - 2]['QUERY PLAN']
+    const planningTimeString = planningTimeCell.split(': ')[1]
+    const planningTime = planningTimeString.split(' ')[0]
+
+    return [parseFloat(executionTime), parseFloat(planningTime)]
 
 }
 
-var checkExecutionTime = async function (query, DBServerConfig){
-    console.log('checkExecutionTime', query, DBServerConfig)
+var checkRunningTimes = async function (query, DBServerConfig){
+    console.log('checkRunningTimes', query, DBServerConfig)
 
     return new Promise((resolve, reject) => {
 
         const explain_analyze = 'EXPLAIN ANALYZE ' + query
         executeQuery(explain_analyze, DBServerConfig)
         .then(result => {
-            const exeTime = readExecutionTimeFromResult(result)
-            resolve (exeTime)
+            const [exeTime, planTime] = getExecutionAndPlanningTime(result)
+            resolve({
+                "executionTime": exeTime,
+                "planningTime": planTime,
+            })
         })
         .catch(err => {
             console.log('err', err)
@@ -202,31 +287,60 @@ var checkExecutionTime = async function (query, DBServerConfig){
 
 }
 
-// TODO: set up new database for every query 
-var setupSQL = async function (creationQuery){
+// set up new database for every query 
+var setupSQL = async function (DBServerConfig, creationQueries, databaseName){
 
-    // TODO: query to create new database 
-    const newDBQuery = ``
+    console.log('Setting up new SQL DB for submission...')
+    const newDBQuery = `CREATE DATABASE ` + databaseName + `; `
 
-    const query = newDBQuery + creationQuery
+    return new Promise((resolve, reject) => {
 
-    executeQuery(query, DBServerConfig)
-    .then(result => {
-        console.log('executeQuery result', result)
-        resolve ({"result": result})
-    })
-    .catch(err => {
-        console.log('err', err)
-        resolve (err)
+        executeQuery(newDBQuery, DBServerConfig)
+        .then(result => {
+            console.log('newDBQuery result', result)
+            DBServerConfig['database'] = databaseName
+    
+            executeQuery(creationQueries, DBServerConfig)
+            .then(result => {
+                console.log('executeQuery result', result)
+                resolve ({"result": result})
+            })
+            .catch(err => {
+                console.log('err', err)
+                reject (err)
+            })
+    
+        })
+        .catch(err => {
+            console.log('err', err)
+            reject (err)
+        })
+
     })
 
 
 }
 
-// TODO: delete database from DB server after the query
-var cleanSQL = async function (DBServerConfig){
+// Delete the database after query finish execution
+var cleanSQL = async function (DBServerConfig, competitionName, databaseName){
 
+    DBServerConfig['database'] = competitionName
 
+    const query = `DROP DATABASE IF EXISTS ` + databaseName;
+
+    return new Promise((resolve, reject) => {
+
+        executeQuery(query, DBServerConfig)
+        .then(result => {
+            console.log('executeQuery result', result)
+            resolve ({"result": result})
+        })
+        .catch(err => {
+            console.log('err', err)
+            resolve (err)
+        })
+
+    })
 
 }
 
@@ -246,35 +360,45 @@ var getCorrectAnswer = async function (query){
 
 // Make sure the database in DBServerConfig is correct
 var executeQuery = async function (query, DBServerConfig){
-    
-    // use defult setting in config file if no config find for competition
-    // var SQLConfig = DBServerConfig ? DBServerConfig : config
 
     // Send Query to SQL DB
     return new Promise((resolve, reject) => {
 
-        if (isValid(query)){
+        sql.query(DBServerConfig, query)
+        .then(result => {
+            console.log(result)
+            resolve (result.rows)
+        })
+        .catch(err => {
+            // console.log('sql.query', err)
+            reject (err)
+        })
 
-            sql.query(DBServerConfig, query)
-            .then(result => {
-                console.log(result)
-                resolve (result.rows)
-            })
-            .catch(err => {
-                console.log('sql.query', err)
-                reject (err)
-            })
-        }
     })
 }
 
-var updateMongoDBQueryInfo = async function (submissionId, details){
+var updateSubmission = async function (submissionId, details){
 
+    return new Promise((resolve, reject) => {
+
+        Submission.updateOne(
+            {id: submissionId}, 
+            {$set: details}
+        )
+        .then((res) => {
+            Submission.findOne({id:submissionId})
+            .then(sub => console.log(sub))
+            resolve(res)            
+        })
+        .catch(err => {
+            reject (err)
+        })
+    })
 
 }
 
 
-var createSubmissionInMongoDB = async function(query, competitionName, creatorId){
+var createSubmission = async function(query, competitionName, creatorId){
     const submissionId = new ObjectID();
 
     const newSubmission = new Submission({
@@ -285,12 +409,15 @@ var createSubmissionInMongoDB = async function(query, competitionName, creatorId
         competitionName: competitionName,
     })
 
-    newSubmission.save()
-    .then(result => {
-        console.log('new submission created:', result)
-        return submissionId        
+    return new Promise((resolve, reject) => {
+
+        newSubmission.save()
+        .then(result => {
+            console.log('new submission created:', result)
+            resolve (submissionId)        
+        })
+        .catch(err => reject(err))
     })
-    .catch(err => console.log(err))
 
 }
 
@@ -334,85 +461,124 @@ var updateUser = async function (submissionId, creatorId){
 }
 
 
-var receiveQuery = async function(req,res){
-    
+var runQuery = async function(req,res){
+// var runQuery = async function(info){
 
     const creatorId = req.params.id
     const competitionName = req.query.competition
     const query = req.query.q;
-    console.log(competitionName, query, creatorId)
 
+    // const creatorId = info.id
+    // const competitionName = info.competition
+    // const query = info.q;
 
     const competitionDetails = await getCompetitionDetails(competitionName)
-    // console.log(competitionDetails)
 
-    // const correctAnswer = competitionDetails.correctAnswer 
-    const correctAnswer = await getCorrectAnswer(query) // testing
+
+    const correctAnswer = competitionDetails.correctAnswer 
+    // const correctAnswer = await getCorrectAnswer(query) // testing
     console.log(correctAnswer)
 
-    // const submissionId = createSubmissionInMongoDB(query, competitionName, creatorId)
-    const submissionId = new ObjectID('62448f3091a32b98f19bff03') // test
+    const submissionId = await createSubmission(query, competitionName, creatorId)
+    // const submissionId = new ObjectID('62448f3091a32b98f19bff03') // test
+
+    // TODO: test
     // updateCompetition(submissionId, competitionName)
     // updateUser(submissionId, creatorId)
 
 
-    // TODO
     // create new database for each new query
-    // const databaseName = competitionName + '-' + submissionId
-    const databaseName = 'Tutorial' // testing
-    DBServerConfig['database'] = databaseName
+    const databaseName = competitionName.toLowerCase() + '_' + submissionId
+
+    DBServerConfig['database'] = competitionName
     DBServerConfig['statement_timeout'] = competitionDetails.statementTimeout 
     
     console.log(DBServerConfig)
-    // await setupSQL(competitionDetails.creationQuery);
 
+    setupSQL(DBServerConfig, competitionDetails.creationQueries, databaseName)
+    .then(setupResult => {
 
+        checkQueryCorrectness(query, DBServerConfig, correctAnswer)
+        .then(getQueryResult => {
+            console.log('isQueryCorrect', getQueryResult)
 
-    checkQueryCorrectness(query, DBServerConfig, correctAnswer)
-    .then(isQueryCorrect => {
-        console.log('isQueryCorrect', isQueryCorrect)
+            updateSubmission(submissionId, {"queryResult": getQueryResult})
+            .then(result => {
 
-    //     // TODO
-    //     // updateMongoDBQueryInfo(submissionId, {"correctness": isQueryCorrect})
+            switch (getQueryResult) {
+                case 'correct': // check for execution time if query return correct answer
+                    console.log('correct')
+                    checkRunningTimes(query, DBServerConfig)
+                    .then(runningTimes => {
+                        submission = updateSubmission(submissionId, runningTimes)
+                        clean = cleanSQL(DBServerConfig, competitionName, databaseName)
+                        Promise.all([submission, clean])
+                        .then(result => {
+                            res.status(200).json(runningTimes)
+                        })
+                    });
+                    break;
+                case 'wrong answer': // stop and return 
+                    cleanSQL(DBServerConfig, competitionName, databaseName)
+                    res.status(200).json('Wrong')
+                    break;
+                case 'timeout': // stop and return
+                    cleanSQL(DBServerConfig, competitionName, databaseName)
+                    res.status(200).json('Query timeout!')
+                    break;
+                default:
+                    cleanSQL(DBServerConfig, competitionName, databaseName)
+                    res.status(200).json('SQL Query error')
+                    break;
+            }
 
-        switch (isQueryCorrect) {
-            case 'correct': // check for execution time if query return correct answer
-                console.log('correct')
-                checkExecutionTime(query, DBServerConfig)
-                .then(executionTime => {
-                    // console.log(executionTime)
-                    // TODO
-                    // updateMongoDBQueryInfo(queryId, {"executionTime": executionTime})
-                    // cleanSQL(databaseName)
-                    res.status(200).json(executionTime)
-                });
-                break;
-            case 'wrong answer': // stop and return 
-                console.log('wrong', isQueryCorrect);
-                // cleanSQL(databaseName)
-                res.status(200).json('Wrong')
-                break;
-            case 'timeout': // stop and return
-                console.log('timeout');
-                // cleanSQL(databaseName)
-                res.status(200).json('Query timeout!')
-                break;
-            default:
-                console.log(isQueryCorrect);
-                // cleanSQL(databaseName)
-                res.status(200).json('SQL error')
-                break;
-        }
+            })
+            .catch(err => {
+                cleanSQL(DBServerConfig, competitionName, databaseName)
+                return res.status(500).send(err)
+            })
+
+        })
+        .catch(err => {
+            console.log(err)
+            cleanSQL(DBServerConfig, competitionName, databaseName)
+            res.status(400).json('Invalid Query Submitted!')
+        })
 
     })
     .catch(err => {
         console.log(err)
-        // cleanSQL(databaseName)
-        res.status(400).json('Invalid Query Submitted!')
+        return res.status(500).send(err.message)
     })
 
 }
 
+var test = async function(info){
+    return new Promise((resolve, reject) => {
+        console.log('start')
 
-module.exports.receiveQuery = receiveQuery;
+        resolve(runQuery(info))
+        // setTimeout(function () {
+        //     console.log('end')
+
+        //     resolve (1)
+        // }, 5000);
+    })
+}
+
+process.on('message', async (msg) => {
+    try {
+        // const queryResult = await runQuery(msg.info);
+        const queryResult = await test(msg.info);
+        process.send(queryResult);
+    } catch (err) {
+        process.send(err);
+    }
+
+});
+
+
+
+// module.exports.receiveQuery = receiveQuery;
+module.exports.runQuery = runQuery;
 module.exports.getCorrectAnswer = getCorrectAnswer;

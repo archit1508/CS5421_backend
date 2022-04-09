@@ -18,14 +18,14 @@ const SubmissionSchema = new Schema({
     competitionName:{ 
         type: String
     },
-    correctness:{
-        type: Boolean
+    queryResult:{
+        type: String
     },
     executionTime:{
-        type: String
+        type: Number
     },
     planningTime:{
-        type: String
+        type: Number
     }
 })
 
