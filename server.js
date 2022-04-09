@@ -12,6 +12,7 @@ const createCompetitions = require("./routes/api/createCompetitions.js");
 const runQueries = require("./routes/api/runQueries.js");
 const registerCompetition = require("./routes/api/registerCompetitions.js");
 const questions = require("./routes/api/questions.js");
+const getEvents = require('./routes/api/getApi.js');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,6 +45,7 @@ app.use("/api/ce2", createCompetitions);
 app.use("/api/ce2/", runQueries);
 app.use("/api/ce2/", registerCompetition);
 app.use("/api/ce2/", questions);
+app.use("/api/getApi/", getEvents);
 
 //main
 app.listen(PORT, function () {
