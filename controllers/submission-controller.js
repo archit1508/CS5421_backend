@@ -2,18 +2,11 @@
 const sql = require('../services/sql-query-service')
 const mongoose = require("mongoose");
 
-// const config = require('../config/config').defultConfig
+const DBServerConfig = require('../config/config').createConfig
 const Submission = require("../models/Submissions");
 const Competition = require("../models/Competitions");
 const User = require("../models/users");
-const DBServerConfig = {
-    database: 'Tutorial',
-    user: 'postgres',
-    host: 'localhost',
-    password: '19930102',
-    port: 5432,
-    // statement_timeout: 10000
-}
+
 ObjectID = require('mongodb').ObjectId;
 
 
@@ -31,161 +24,6 @@ var getCompetitionDetails = async function (competitionName){
 
         })
     })
-
-    // return new Promise((resolve, reject) => {
-
-    //     var competition = 
-    //     {
-    //         creatorId: "creatorId",
-    //         competitionName: "competitionName", 
-    //         competitionDescription : "competitionDescription",
-    //         competitionStartDate: "competitionStartDate",
-    //         competitionEndDate: "competitionEndDate",
-    //         competitionSubmissions : [],
-    //         participantsIds:[],
-    //         correctAnswer: `{"result": [
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 1,
-    //                 "s_qty": 338
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 4,
-    //                 "s_qty": 938
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 5,
-    //                 "s_qty": 760
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 8,
-    //                 "s_qty": 924
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 12,
-    //                 "s_qty": 454
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 13,
-    //                 "s_qty": 768
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 21,
-    //                 "s_qty": 355
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 22,
-    //                 "s_qty": 23
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 31,
-    //                 "s_qty": 700
-    //             },
-    //             {
-    //                 "w_id": 301,
-    //                 "i_id": 36,
-    //                 "s_qty": 158
-    //             }
-    //         ]}`,
-    //         statementTimeout: 10000, //milliseconds
-    //         creationQueries: `
-    //         CREATE TABLE warehouse (
-    //             w_id INTEGER PRIMARY KEY,
-    //             w_name VARCHAR(50),
-    //             w_street VARCHAR(50),
-    //             w_city VARCHAR(50),
-    //             w_country VARCHAR(50)
-    //         );
-    //         INSERT INTO warehouse (w_id, w_name, w_street, w_city, w_country) VALUES (301, 'Schmedeman', 'Sunbrook', 'Singapore', 'Singapore');
-
-    //         CREATE TABLE item (
-    //             i_id INTEGER PRIMARY KEY,
-    //             i_im_id CHAR(8) UNIQUE NOT NULL,
-    //             i_name VARCHAR(50)  NOT NULL,
-    //             i_price NUMERIC(5, 2)  NOT NULL CHECK(i_price >0));
-    //             INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (1, '35356226', 'Indapamide', 95.23);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (2, '00851287', 'SYLATRON', 80.22);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (3, '52549414', 'Meprobamate', 11.64);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (4, '54868007', 'MECLIZINE HYDROCHLORIDE', 54.49);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (5, '24658312', 'Doxycycline Hyclate', 28.99);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (6, '11822073', 'miconazole 1', 73.35);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (7, '51393666', 'Nevi (Mole) Control', 96.86);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (8, '60512629', 'KALI BICHROMICUM', 15.6);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (9, '68788973', 'TOPIRAMATE', 48.58);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (10, '60429082', 'Glipizide', 12.62);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (11, '50241141', 'Skyline Antibacterial Hand Cleanser', 75.03);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (12, '00540097', 'Oxcarbazepine', 18.86);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (13, '67345078', '4 in 1 Pressed Mineral SPF 15 Porcelain', 62.04);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (14, '36987288', 'Virginia Live Oak', 36.96);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (15, '67510150', 'Night Time Cold/Flu Relief Cherry', 92.26);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (16, '53942326', 'Tartar Control Plus', 50.96);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (17, '33992113', 'anti-dandruff', 18.73);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (18, '53645147', 'Ferrum Metallicum', 67.92);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (19, '44924010', 'BABOR Baborganic Crystal Face Scrub', 21.95);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (20, '16590303', 'Liothyronine Sodium', 52.9);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (21, '30142112', 'Kroger DayTime Flu plus Severe Cold and Cough', 88.69);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (22, '59078034', 'Tomatox Magic Massage Pack', 38.52);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (23, '63354871', 'BANANA BOAT', 98.86);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (24, '52731704', 'Anxiety Complex', 14.11);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (25, '49288012', 'Cattle Hair', 51.02);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (26, '68012054', 'Zegerid', 17.08);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (27, '53942502', 'NIGHT-TIME', 91.42);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (28, '49230191', 'DELFLEX', 38.96);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (29, '00934405', 'Clozapine', 70.14);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (30, '05361945', 'RULOX REGULAR', 17.76);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (31, '52125461', 'GENTAMICIN SULFATE', 93.43);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (32, '68012490', 'Fenoglide', 41.31);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (33, '57894071', 'Simponi', 1.3);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (34, '49527997', 'ACNE SOLUTIONS', 51.91);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (35, '50021301', 'SUNZONE SPORT SUNSCREEN SPF 30', 85.21);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (36, '29565200', 'Sunscreen', 55.7);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (37, '64942122', 'Dove Men plus Care', 41.28);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (38, '62750003', 'Zicam', 29.94);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (39, '05170410', 'Vasopressin', 85.02);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (40, '52959692', 'misoprostol', 6.92);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (41, '36987225', 'Jute', 31.03);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (42, '42195210', 'Pyrilamine Maleate and Phenylephrine Hydrochloride', 57.93);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (43, '52959613', 'Amoxicillin', 27.5);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (44, '76420780', 'Multi-Specialty Kit', 23.04);
-    //         INSERT INTO item (i_id, i_im_id, i_name, i_price) VALUES (45, '60505287', 'Ropinirole', 7.24);
-
-    //         CREATE TABLE stock (
-    //             w_id INTEGER REFERENCES warehouse(w_id),
-    //             i_id INTEGER REFERENCES item(i_id),
-    //             s_qty SMALLINT CHECK(s_qty > 0),
-    //             PRIMARY KEY (w_id, i_id));
-                
-    //             INSERT INTO stock VALUES (301, 1, 338);
-    //             INSERT INTO stock VALUES (301, 4, 938);
-    //             INSERT INTO stock VALUES (301, 5, 760);
-    //             INSERT INTO stock VALUES (301, 8, 924);
-    //             INSERT INTO stock VALUES (301, 12, 454);
-    //             INSERT INTO stock VALUES (301, 13, 768);
-    //             INSERT INTO stock VALUES (301, 21, 355);
-    //             INSERT INTO stock VALUES (301, 22, 23);
-    //             INSERT INTO stock VALUES (301, 31, 700);
-    //             INSERT INTO stock VALUES (301, 36, 158);
-    //             INSERT INTO stock VALUES (301, 42, 297);
-    //             INSERT INTO stock VALUES (301, 44, 837);
-    //             INSERT INTO stock VALUES (301, 45, 367);
-
- 
-    //             `
-
-    //     }
-
-    //     resolve (competition)
-
-    // });
-
 
 }
 
