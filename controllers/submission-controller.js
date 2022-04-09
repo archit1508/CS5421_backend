@@ -230,10 +230,11 @@ var isQueryResultEqual = async function (a, b){
 
     if (JSON.stringify(aKeys) !== JSON.stringify(bKeys)) return false // different column names
     
-    aSorted = a.sort(dynamicSortMultiple.apply(this, aKeys));
-    bSorted = b.sort(dynamicSortMultiple.apply(this, aKeys)); 
+    // aSorted = a.sort(dynamicSortMultiple.apply(this, aKeys));
+    // bSorted = b.sort(dynamicSortMultiple.apply(this, aKeys)); 
 
-    if (JSON.stringify(aSorted) !== JSON.stringify(bSorted)) return false // different rows
+    // if (JSON.stringify(aSorted) !== JSON.stringify(bSorted)) return false // different rows
+    if (JSON.stringify(a) !== JSON.stringify(b)) return false // different rows
 
     return true
 } 
