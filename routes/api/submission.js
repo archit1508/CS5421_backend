@@ -36,7 +36,7 @@ var createExecutionThread = async function(req,res){
 
 // Input parameter: competition Id 
 // Input query: q, competition(name)
-router.post("/submit/:id", createExecutionThread);
+router.post("/submit", createExecutionThread);
 // router.post("/submit/:id", submissionController.runQuery);
 
 
