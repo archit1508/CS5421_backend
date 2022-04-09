@@ -12,14 +12,19 @@ router.post("/ce", function(req,res){
         }
         else{
             const newEvent = new Competition({
-                creatorId: req.body.creatorId,
-                competitionName: req.body.competitionName, 
-                competitionDescription : req.body.competitionDescription,
-                competitionStartDate: req.body.competitionStartDate,
-                competitionEndDate: req.body.competitionEndDate,
-                competitionSubmissions : [],
-                participantsIds: []
-            })
+              creatorId: req.body.creatorId,
+              competitionName: req.body.competitionName,
+              competitionDescription: req.body.competitionDescription,
+              competitionStartDate: req.body.competitionStartDate,
+              competitionEndDate: req.body.competitionEndDate,
+              question: "",
+              correctQuery: "",
+              correctAnswer: "",
+              statementTimeout: 2000,
+              creationQueries: "",
+              competitionSubmissions: [],
+              participantsIds: [],
+            });
             newEvent.save()
             .then(ev => {
                 res.json(ev)

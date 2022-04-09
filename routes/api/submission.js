@@ -13,7 +13,7 @@ var createExecutionThread = async function(req,res){
 
     const info = {
         "creatorId": creatorId,
-        "competitionName": competitionName,
+        "competition": competitionName,
         "query": query
     }
 
@@ -21,10 +21,17 @@ var createExecutionThread = async function(req,res){
     child.send({ info: info });
     processMap.set(req.params.id, child.pid)
     child.on('message', async (result) => {
-        console.log("createExecutionThread res", result)
+        console.log("createExecutionThread res", info, result)
         processMap.delete(result);
-        res.sendStatus(200)
+        // res.status(200).send({"result": result, "info": info})
+        res.status(200).send(result)
     });
+
+    child.on('close', c => {
+        console.log(`Child exited with code: ${c}`);
+        process.exit(c);
+    });
+
 }
 
 
