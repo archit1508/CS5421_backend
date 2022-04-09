@@ -5,7 +5,6 @@ const CompetitionsSchema = new Schema({
   creatorId: {
     type: String,
   },
-  participantsIds: [],
   competitionName: {
     type: String,
   },
@@ -28,9 +27,12 @@ const CompetitionsSchema = new Schema({
     type: String,
   },
   statementTimeout: {
-      type: Number,
+    type: Number,
   },
-  creationQueries: [],
+  creationQueries: {
+    type: String,
+  },
+  participantsIds: [],
   competitionSubmissions: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
 });
 
