@@ -359,7 +359,7 @@ var cleanSQL = async function (DBServerConfig, competitionName, databaseName){
 
 }
 
-var getCorrectAnswer = async function (query){
+var getCorrectAnswer = async function (query, DBServerConfig){
     return new Promise((resolve, reject) => {
         executeQuery(query, DBServerConfig)
         .then(result => {

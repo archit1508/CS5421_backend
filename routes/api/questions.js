@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Competition = require("../../models/Competitions");
-const sql = require("../../services/sql-query-service");
+const submissionController = require("../../controllers/submission-controller");
+const configPg = require("../../config/config").createConfig;
 
 router.post("/questions", function (req, res) {
   Competition.findOne({ competitionName: req.body.competitionName })
@@ -13,19 +14,19 @@ router.post("/questions", function (req, res) {
           ...configPg,
           database: req.body.competitionName,
         };
-        sql
-          .getCorrectAnswer(req.body.query)
+        submissionController
+          .getCorrectAnswer(req.body.query, DBServerConfig)
           .then((response) => {
-            competition
-              .updateOne(
-                {},
-                {
-                  question: req.body.questions,
-                  correctQuery: req.body.query,
-                  correctAnswer: response.result,
-                }
-              )
-              .then((response) => {
+            console.log(response);
+            Competition.findOneAndUpdate(
+              { competitionName: req.body.competitionName },
+              {
+                question: req.body.questions,
+                correctQuery: req.body.query,
+                correctAnswer: response,
+              }
+            )
+              .then(() => {
                 return res.status(200).send("Question added successfully");
               })
               .catch((err) => {
