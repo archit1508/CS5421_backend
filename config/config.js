@@ -6,10 +6,18 @@ const defultConfig = {
     port: 5432,
 }
 
+// const createConfig = {
+//     user: 'postgres',
+//     host: 'localhost',
+//     password: '1234567',
+//     port: 5432,
+// }
+
 const createConfig = {
     user: 'postgres',
     host: 'localhost',
-    password: '1234567',
+    database: 'Tutorial',
+    password: '19930102',
     port: 5432,
 }
 

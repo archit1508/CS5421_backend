@@ -7,8 +7,10 @@ const pgtools = require('pgtools');
 
 router.post("/ce", function(req,res){
     Competition.findOne({competitionName: req.body.competitionName}).then(ce => {
+
         if(ce){
-            return res.status(400)
+            // return res.status(400)
+            res.status(400).send('already exist')
         }
         else{
             const newEvent = new Competition({
