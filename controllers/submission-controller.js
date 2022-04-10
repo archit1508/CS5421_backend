@@ -56,25 +56,30 @@ function dynamicSortMultiple() {
 }
 
 // Check whether two query results (list of objects) are equal
-var isQueryResultEqual = async function (a, b){
+var isQueryResultEqual = function (a, b){
+
+    if (a.length !== b.length) return false // different number of rows
+    else{
+        if (a.length == 0) return true // both empty result
+
+        aKeys = Object.keys(a[0])
+        bKeys = Object.keys(b[0])
+        aKeys.sort()
+        bKeys.sort()
     
-    if (a.length != b.length) return false // different number of columns
-    if (a.length == 0) return true // both empty result
-
-    aKeys = Object.keys(a[0])
-    bKeys = Object.keys(b[0])
-    aKeys.sort()
-    bKeys.sort()
-
-    if (JSON.stringify(aKeys) !== JSON.stringify(bKeys)) return false // different column names
+        if (JSON.stringify(aKeys) !== JSON.stringify(bKeys)) return false // different column names
+        
+        // aSorted = a.sort(dynamicSortMultiple.apply(this, aKeys));
+        // bSorted = b.sort(dynamicSortMultiple.apply(this, aKeys)); 
     
-    // aSorted = a.sort(dynamicSortMultiple.apply(this, aKeys));
-    // bSorted = b.sort(dynamicSortMultiple.apply(this, aKeys)); 
+        // if (JSON.stringify(aSorted) !== JSON.stringify(bSorted)) return false // different rows
+        if (JSON.stringify(a) !== JSON.stringify(b)) return false // different rows content
+    
+    
+        return true
 
-    // if (JSON.stringify(aSorted) !== JSON.stringify(bSorted)) return false // different rows
-    if (JSON.stringify(a) !== JSON.stringify(b)) return false // different rows
+    }
 
-    return true
 } 
 
 
@@ -140,20 +145,19 @@ var checkRunningTimes = async function (query, DBServerConfig){
 
 }
 
+
 // set up new database for every query 
 var setupSQL = async function (DBServerConfig, creationQueries, databaseName){
 
     const newDBQuery = `CREATE DATABASE ` + databaseName + `; `
-    
     console.log('Setting up new SQL DB for submission...', newDBQuery)
 
     return new Promise((resolve, reject) => {
 
         executeQuery(newDBQuery, DBServerConfig)
         .then(result => {
-            // console.log('newDBQuery result', result)
             DBServerConfig['database'] = databaseName
-            console.log(creationQueries)
+            
             executeQuery(creationQueries, DBServerConfig)
             .then(result => {
                 // console.log('creationQueries result', result)
@@ -338,7 +342,7 @@ var runQuery = async function(info){
     const userRes = await updateUser(submissionId, creatorId)
 
     // create new database for each new query
-    const databaseName = competitionName.toLowerCase() + '_' + submissionId
+    const databaseName = 'sub_' + competitionName.toLowerCase().replace(/ /g, '_') + '_' + submissionId
 
     DBServerConfig['database'] = competitionName
     DBServerConfig['statement_timeout'] = competitionDetails.statementTimeout 
@@ -402,7 +406,6 @@ var runQuery = async function(info){
         .catch(err => {
             console.log(err)
             reject(err)
-
         })
     })
 

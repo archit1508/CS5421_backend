@@ -8,13 +8,12 @@ const SubmissionSchema = new Schema({
     content:{
         type:String
     },
-    creatorId:{ // TODO user email??
+    creatorId:{ // user email
         type: String
     },
     createTime:{
         type:Date
     },
-    // competitionId:{ // TODO competition name??
     competitionName:{ 
         type: String
     },

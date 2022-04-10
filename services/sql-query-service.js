@@ -24,7 +24,6 @@ var parseError = async function(err, sqlString) {
   if (err === undefined) {
     return ("No errors returned from Postgres");
   } else {
-    // console.log("ERROR Object.keys():", Object.keys(err))
 
     if (err.code !== undefined) {
       console.log("Postgres error code:", err.code);
